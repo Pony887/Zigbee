@@ -1,39 +1,19 @@
 package com.guet.zigbee;
 
-import android.accounts.Account;
-import android.app.Activity;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class OneFragment extends Fragment {
 
@@ -48,7 +28,7 @@ public class OneFragment extends Fragment {
         return view;
     }
 
-    //视频测试用
+    /*视频测试用
     public void showDeleteDiaog() {
         //这里的构造函数使用两个参数，第二个参数即为设置样式
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),R.style.AlertDialog);
@@ -58,7 +38,7 @@ public class OneFragment extends Fragment {
             }
         });
         builder.show();
-    }
+    }*/
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
@@ -87,15 +67,14 @@ public class OneFragment extends Fragment {
             }
         };
         Timer infoTimer = new Timer();
-        infoTimer.schedule(infoTimerTask ,0,REFRESHINTERVAL*6000);
-
+        infoTimer.schedule(infoTimerTask, 0, REFRESHINTERVAL * 60000);
     }
 
     private class FetchInfoTask extends AsyncTask<Void,Void,List<Data>>{
         private List<Data> dataList;
         @Override
         protected List<Data> doInBackground(Void... params) {
-            try {
+           /* try {
                 OkHttpClient client=new OkHttpClient();
                 Request request=new Request.Builder()
                         .url("http://112.74.210.103/get_data.json")
@@ -106,21 +85,23 @@ public class OneFragment extends Fragment {
                 dataList = parseJSONWithGSON(responseData);
             } catch (Exception e) {
                 e.printStackTrace();
-            }
+            }*/
             return dataList;
         }
 
         @Override
         protected void onPostExecute(List<Data> dataList) {
-            TextView heartView = (TextView)getView().findViewById(R.id.heart);
-            TextView bloodView = (TextView)getView().findViewById(R.id.bloodhigh);
-            TextView bloodView1= (TextView) getView().findViewById(R.id.bloodlow);
-            Button button= (Button) getView().findViewById(R.id.testButton);
-            Random rd = new Random();
-            heartView.setText(String.valueOf(heart));
-            bloodView.setText(String.valueOf(blood1));
-            bloodView1.setText(String.valueOf(blood2));
-            if (blood1>150||blood2>100||heart>85)
+            if (getView() != null) {
+                TextView heartView = (TextView)getView().findViewById(R.id.heart);
+                TextView bloodView = (TextView)getView().findViewById(R.id.bloodhigh);
+                TextView bloodView1= (TextView) getView().findViewById(R.id.bloodlow);
+                // Button button= (Button) getView().findViewById(R.id.testButton);
+                Random rd = new Random();
+                heartView.setText(String.valueOf(rd.nextInt(10) + 80));
+                bloodView.setText(String.valueOf(rd.nextInt(10) + 89));
+                bloodView1.setText(String.valueOf(rd.nextInt(10) + 60));
+            }
+            /*if (blood1>150||blood2>100||heart>85)
             {
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext(),R.style.AlertDialog1);
                 builder1.setNegativeButton(".", new DialogInterface.OnClickListener() {
@@ -130,21 +111,19 @@ public class OneFragment extends Fragment {
                 });
                 builder1.show();
             }
-            heart=heart+5;
-            blood1=blood1+5;
-            blood2=blood2+6;
+
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     showDeleteDiaog();
                 }
             });
-//            heartView.setText(String.valueOf(rd.nextInt(90)+10));
-//            bloodView.setText(String.valueOf(rd.nextInt(989)+10));
-//            bloodView1.setText(String.valueOf(rd.nextInt(90)+10));
+            heartView.setText(String.valueOf(rd.nextInt(90)+10));
+            bloodView.setText(String.valueOf(rd.nextInt(989)+10));
+            bloodView1.setText(String.valueOf(rd.nextInt(90)+10));*/
         }
     }
-    private List<Data> parseJSONWithGSON(String jsonData)
+    /*private List<Data> parseJSONWithGSON(String jsonData)
     {
         Gson gson=new Gson();
         List<Data> dataList=gson.fromJson(jsonData,new TypeToken<List<Data>>(){}.getType());
@@ -155,5 +134,5 @@ public class OneFragment extends Fragment {
             Log.d("MainActivity","Version is "+dataList.get(i).getVersion());
         }
         return dataList;
-    }
+    }*/
 }

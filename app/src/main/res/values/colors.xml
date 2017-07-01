@@ -11,7 +11,7 @@
     <!-- 黑色-->
     <color name="black">#000000</color>
     <!--黄色-->
-    <color name="yellow">#fe543d</color>
+    <color name="yellow">#a2a346</color>
     <!--字体-->
     <color name="ziti">#5a564d</color>
     <!-- A really bright Holo shade of blue -->
@@ -22,4 +22,5 @@
     <color name="holo_orange_light">#ffffbb33</color>
     <!-- A light Holo shade of red -->
     <color name="holo_red_light">#ffff4444</color>
+    <color name="red_heart">#fe543d</color>
 </resources>
