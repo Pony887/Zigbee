@@ -22,13 +22,13 @@
                 android:background="@drawable/heart"
                 >
                 <TextView
-                    android:id="@+id/heart"
-                    android:layout_marginLeft="100dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/yellow"
-                    android:textSize="150sp"
+                        android:id="@+id/heart"
+                        android:layout_marginLeft="100dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/red_heart"
+                        android:textSize="150sp"
                     />
             </LinearLayout>
             <ImageView
@@ -47,28 +47,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <TextView
-                        android:id="@+id/bloodhigh"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="35dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/yellow"
-                        android:textSize="100sp"
+                            android:id="@+id/bloodhigh"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="35dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/red_heart"
+                            android:textSize="100sp"
                         />
-                    <Button
-                        android:layout_alignParentRight="true"
-                        android:background="@color/mihuang"
-                        android:id="@+id/testButton"
-                        android:layout_width="15dp"
-                        android:layout_height="281dp" />
                     <TextView
-                        android:layout_below="@id/bloodhigh"
-                        android:layout_centerHorizontal="true"
-                        android:id="@+id/bloodlow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/yellow"
-                        android:textSize="100sp"/>
+                            android:layout_below="@id/bloodhigh"
+                            android:layout_centerHorizontal="true"
+                            android:id="@+id/bloodlow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/red_heart"
+                            android:textSize="100sp"/>
                 </RelativeLayout>
             </LinearLayout>
         </RelativeLayout>

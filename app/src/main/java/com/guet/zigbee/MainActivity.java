@@ -1,13 +1,11 @@
 package com.guet.zigbee;
 
-import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,12 +17,9 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    String[] titles = new String[]{"身体数据", "运动睡眠", "位置信息", "我"};
     private ImageView  item_weixin, item_tongxunlu, item_faxian,item_me;
     private Button call;
     private TextView title;
@@ -36,7 +31,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private List<Fragment> mFragmentList = new ArrayList<Fragment>();
     private FragmentAdapter mFragmentAdapter;
 
-    String[] titles = new String[]{"身体数据", "运动睡眠", "位置信息", "我"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,8 +41,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mFragmentAdapter = new FragmentAdapter(this.getSupportFragmentManager(), mFragmentList);
         vp.setOffscreenPageLimit(4);//ViewPager的缓存为4帧
         vp.setAdapter(mFragmentAdapter);
-        vp.setCurrentItem(0);//初始设置ViewPager选中第一帧
         item_weixin.setImageResource(R.drawable.health1);
+        vp.setCurrentItem(0);//初始设置ViewPager选中第一帧
+
         //ViewPager的监听事件
         vp.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -123,24 +118,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                break;
         }
     }
-    public class FragmentAdapter extends FragmentPagerAdapter {
 
-        List<Fragment> fragmentList = new ArrayList<Fragment>();
-
-        public FragmentAdapter(FragmentManager fm, List<Fragment> fragmentList) {
-            super(fm);
-            this.fragmentList = fragmentList;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return fragmentList.get(position);
-        }
-        @Override
-        public int getCount() {
-            return fragmentList.size();
-        }
-    }
     /*
      *由ViewPager的滑动修改底部导航Text的颜色
      */
@@ -167,7 +145,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             item_me.setImageResource(R.drawable.data1);
         }
     }
-    //Okhttp获取数据
+
+    /*//Okhttp获取数据
     private void sendReqyestWithOkHttp(){
         new Thread(new Runnable() {
             @Override
@@ -187,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         }).start();
-    }
+    }*/
     private void parseJSONWithGSON(String jsonData)
     {
         Gson gson=new Gson();
@@ -197,6 +176,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d("MainActivity","Id is "+dataList.get(i).getId());
             Log.d("MainActivity","Name is "+dataList.get(i).getName());
             Log.d("MainActivity","Version is "+dataList.get(i).getVersion());
+        }
+    }
+
+    public class FragmentAdapter extends FragmentPagerAdapter {
+
+        List<Fragment> fragmentList = new ArrayList<Fragment>();
+
+        public FragmentAdapter(FragmentManager fm, List<Fragment> fragmentList) {
+            super(fm);
+            this.fragmentList = fragmentList;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return fragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return fragmentList.size();
         }
     }
 }
