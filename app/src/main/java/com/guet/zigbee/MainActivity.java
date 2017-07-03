@@ -17,6 +17,10 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     String[] titles = new String[]{"身体数据", "运动睡眠", "位置信息", "我"};
@@ -111,6 +115,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.item_me:
                 vp.setCurrentItem(3, true);
                 break;
+            case R.id.call:
+                sendReqyestWithOkHttp();
+                break;
             //拍视屏测试用
 //            case R.id.testButton:
 ////                sendReqyestWithOkHttp();
@@ -146,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    /*//Okhttp获取数据
+    //Okhttp获取数据
     private void sendReqyestWithOkHttp(){
         new Thread(new Runnable() {
             @Override
@@ -154,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 try {
                     OkHttpClient client=new OkHttpClient();
                     Request request=new Request.Builder()
-                            .url("http://112.74.210.103/get_data.json")
+                            .url("http://1.myfirstpay.applinzi.com/wrist/data_deal/select.php")
                             .build();
                     Response response=client.newCall(request).execute();
                     String responseData=response.body().string();
@@ -163,19 +170,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
             }
         }).start();
-    }*/
+    }
+    //解析并显示json数据
     private void parseJSONWithGSON(String jsonData)
     {
         Gson gson=new Gson();
         List<Data> dataList=gson.fromJson(jsonData,new TypeToken<List<Data>>(){}.getType());
         for (int i=0;i<dataList.size();i++)
         {
-            Log.d("MainActivity","Id is "+dataList.get(i).getId());
-            Log.d("MainActivity","Name is "+dataList.get(i).getName());
-            Log.d("MainActivity","Version is "+dataList.get(i).getVersion());
+            Log.d("MainActivity","Id is "+dataList.get(i).getHeart());
+            Log.d("MainActivity","Name is "+dataList.get(i).getBloodhigh());
+            Log.d("MainActivity","Version is "+dataList.get(i).getBloodlow());
         }
     }
 
