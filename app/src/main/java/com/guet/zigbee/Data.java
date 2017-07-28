@@ -7,10 +7,27 @@ package com.guet.zigbee;
 
 public class Data {
     private String heart;
+    private String x;
+    private String y;
     private String bloodhigh;
     private String bloodlow;
     public String getHeart() {
         return heart;
+    }
+    public String getX() {
+        return x;
+    }
+
+    public void setX(String x) {
+        this.x = x;
+    }
+
+    public String getY() {
+        return y;
+    }
+
+    public void setY(String y) {
+        this.y = y;
     }
 
     public String getBloodhigh() {

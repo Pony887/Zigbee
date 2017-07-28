@@ -116,13 +116,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 vp.setCurrentItem(3, true);
                 break;
             case R.id.call:
-                sendReqyestWithOkHttp();
                 break;
-            //拍视屏测试用
-//            case R.id.testButton:
-////                sendReqyestWithOkHttp();
-//                showDeleteDiaog();
-//                break;
         }
     }
 
@@ -153,38 +147,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    //Okhttp获取数据
-    private void sendReqyestWithOkHttp(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    OkHttpClient client=new OkHttpClient();
-                    Request request=new Request.Builder()
-                            .url("http://1.myfirstpay.applinzi.com/wrist/data_deal/select.php")
-                            .build();
-                    Response response=client.newCall(request).execute();
-                    String responseData=response.body().string();
-                    //解析json数据
-                    parseJSONWithGSON(responseData);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-    //解析并显示json数据
-    private void parseJSONWithGSON(String jsonData)
-    {
-        Gson gson=new Gson();
-        List<Data> dataList=gson.fromJson(jsonData,new TypeToken<List<Data>>(){}.getType());
-        for (int i=0;i<dataList.size();i++)
-        {
-            Log.d("MainActivity","Id is "+dataList.get(i).getHeart());
-            Log.d("MainActivity","Name is "+dataList.get(i).getBloodhigh());
-            Log.d("MainActivity","Version is "+dataList.get(i).getBloodlow());
-        }
-    }
 
     public class FragmentAdapter extends FragmentPagerAdapter {
 
