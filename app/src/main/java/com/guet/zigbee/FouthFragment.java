@@ -15,6 +15,7 @@ public class FouthFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        //各种报错啊
         View view = inflater.inflate(R.layout.fragment_fouth, container, false);
         return view;
     }
