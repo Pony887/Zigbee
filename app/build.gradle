@@ -46,4 +46,5 @@ dependencies {
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.android.support:support-v4:25.2.1'
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile files('libs/mysql-connector-java-5.1.18-bin.jar')
 }
