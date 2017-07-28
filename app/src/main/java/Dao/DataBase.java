@@ -1,6 +1,9 @@
 package Dao;
 
+import android.util.Log;
+
 import com.guet.zigbee.Data;
+import com.guet.zigbee.MainActivity;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -37,7 +40,8 @@ public ArrayList<Data> TheSqlConnection()
         while(rs.next())
         {
             Data data=new Data();
-            data.setHeart(rs.getString(1));
+            String s=rs.getString(1);
+            data.setHeart(s);
             data.setX(String.valueOf(rs.getFloat(2)));
             data.setY(String.valueOf(rs.getFloat(3)));
             data.setBloodlow(rs.getInt(4));
