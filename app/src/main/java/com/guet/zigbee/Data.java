@@ -10,8 +10,8 @@ public class Data {
     private String heart;
     private String x;
     private String y;
-    private String bloodhigh;
-    private String bloodlow;
+    private int bloodhigh;
+    private int bloodlow;
 
     public String getHeart() {
         return heart;
@@ -37,19 +37,19 @@ public class Data {
         this.y = y;
     }
 
-    public String getBloodhigh() {
+    public int getBloodhigh() {
         return bloodhigh;
     }
 
-    public void setBloodhigh(String bloodhigh) {
+    public void setBloodhigh(int bloodhigh) {
         this.bloodhigh = bloodhigh;
     }
 
-    public String getBloodlow() {
+    public int getBloodlow() {
         return bloodlow;
     }
 
-    public void setBloodlow(String bloodlow) {
+    public void setBloodlow(int bloodlow) {
         this.bloodlow = bloodlow;
     }
 }

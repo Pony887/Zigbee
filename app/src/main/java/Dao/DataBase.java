@@ -19,12 +19,12 @@ public class DataBase {
     private static String PASSWORD="band";
 
     //sql语句
-    private String sql="select heart,x,y,lowblood,heightblood from data";
+    private static String sql="select heart,x,y,lowblood,heightblood from data";
 
     //Data的集合
     ArrayList<Data> DataList=new ArrayList<Data>();
 
-public void TheSqlConnection()
+public ArrayList<Data> TheSqlConnection()
 {
     Connection conn;
     try {
@@ -40,8 +40,8 @@ public void TheSqlConnection()
             data.setHeart(rs.getString(1));
             data.setX(String.valueOf(rs.getFloat(2)));
             data.setY(String.valueOf(rs.getFloat(3)));
-            data.setBloodlow(String.valueOf(rs.getInt(4)));
-            data.setBloodhigh(String.valueOf(rs.getInt(5)));
+            data.setBloodlow(rs.getInt(4));
+            data.setBloodhigh(rs.getInt(5));
 
             //添加到Data集合
             DataList.add(data);
@@ -49,6 +49,6 @@ public void TheSqlConnection()
     } catch (Exception e) {
         e.printStackTrace();
     }
+    return DataList;
 }
-
 }
