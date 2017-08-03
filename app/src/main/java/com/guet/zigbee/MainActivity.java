@@ -1,5 +1,7 @@
 package com.guet.zigbee;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,6 +22,8 @@ import java.util.List;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+
+import static android.R.attr.phoneNumber;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -116,6 +120,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 vp.setCurrentItem(3, true);
                 break;
             case R.id.call:
+                Intent intentPhone = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "10086"));
+                try {
+                    startActivity(intentPhone);
+                }catch (SecurityException e) {
+                    e.printStackTrace();
+                }
                 break;
         }
     }
