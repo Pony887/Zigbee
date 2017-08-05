@@ -1,32 +1,39 @@
 package com.guet.zigbee;
 
+import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import android.app.Notification.Builder;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
-import static android.R.attr.phoneNumber;
+import Dao.DataBase;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private NotificationManager manager;
+    private int Notification_ID;
+    //辅助判断是否一键呼救
+    private boolean iscall=true;
+    //获取activity
+    private Activity activity=this;
     String[] titles = new String[]{"身体数据", "运动睡眠", "位置信息", "我"};
     private ImageView  item_weixin, item_tongxunlu, item_faxian,item_me;
     private Button call;
@@ -51,6 +58,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         vp.setAdapter(mFragmentAdapter);
         item_weixin.setImageResource(R.drawable.health1);
         vp.setCurrentItem(0);//初始设置ViewPager选中第一帧
+        //通知栏管理器
+        manager=(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//        定时
+        TimerTask callTimeTask=new TimerTask() {
+            @Override
+            public void run() {
+                DataBase db=new DataBase();
+                ArrayList<Data> dataList=db.TheSqlConnection();
+                if (dataList.get(dataList.size()-1).getCall().equals("call")&&iscall)
+                {
+//                    VibratorUtil.Vibrate(activity,1000);
+                    showNotification();
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    iscall=false;
+                }else if(dataList.get(dataList.size()-1).getCall().equals("nocall"))
+                {
+                    iscall=true;
+                }
+            }
+        };
+        Timer infoTimer = new Timer();
+        infoTimer.schedule(callTimeTask,0,6000);
 
         //ViewPager的监听事件
         vp.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -76,6 +109,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    /**
+     *
+     */
+    private void showNotification() {
+        // TODO Auto-generated method stub
+        Notification.Builder builder=new Builder(this);
+        builder.setSmallIcon(R.drawable.icon);//设置图标
+        builder.setTicker("一键呼救");//手机状态栏的提示
+        builder.setContentTitle("一键呼救");//设置标题
+        builder.setContentText("有老人一键呼救,点击查看");//设置通知内容
+        builder.setWhen(System.currentTimeMillis());//设置通知时间
+        Intent intent=new Intent(this,MainActivity.class);
+        PendingIntent pendingIntent=PendingIntent.getActivity(this, 0, intent, 0);
+        builder.setContentIntent(pendingIntent);//点击后的意图
+        builder.setDefaults(Notification.DEFAULT_LIGHTS);//设置指示灯
+        builder.setDefaults(Notification.DEFAULT_SOUND);//设置提示声音
+        builder.setDefaults(Notification.DEFAULT_VIBRATE);//设置震动
+        Notification notification=builder.build();//4.1以上，以下要用getNotification()
+        manager.notify(Notification_ID, notification);
+    }
     /**
      * 初始化布局View
      */
@@ -104,6 +157,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mFragmentList.add(threeFragment);
         mFragmentList.add(fouthFragment);
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -120,12 +174,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 vp.setCurrentItem(3, true);
                 break;
             case R.id.call:
-                Intent intentPhone = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "10086"));
-                try {
-                    startActivity(intentPhone);
-                }catch (SecurityException e) {
-                    e.printStackTrace();
-                }
+                Intent intent = new Intent(Intent.ACTION_DIAL,Uri.parse("tel:" + "15207732195"));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
                 break;
         }
     }

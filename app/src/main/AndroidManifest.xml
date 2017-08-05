@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.guet.zigbee">
+    <!--通知栏消息权限-->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <!--震动权限-->
+    <uses-permission android:name="android.permission.VIBRATE"></uses-permission>
     <!--拨打电话的权限-->
     <uses-permission android:name="android.permission.CALL_PHONE"></uses-permission>
     <!--用于进行网络定位-->

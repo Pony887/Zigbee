@@ -22,7 +22,7 @@ public class DataBase {
     private static String PASSWORD="band";
 
     //sql语句
-    private static String sql="select heart,x,y,lowblood,heightblood from data";
+    private static String sql="select heart,x,y,lowblood,heightblood,m_call from data";
 
     //Data的集合
     ArrayList<Data> DataList=new ArrayList<Data>();
@@ -37,6 +37,8 @@ public ArrayList<Data> TheSqlConnection()
         conn= DriverManager.getConnection(URL,USER,PASSWORD);
         Statement stmt=conn.createStatement();
         ResultSet rs=stmt.executeQuery(sql);
+        //清除集合的数据
+        DataList.clear();
         while(rs.next())
         {
             Data data=new Data();
@@ -46,7 +48,7 @@ public ArrayList<Data> TheSqlConnection()
             data.setY(String.valueOf(rs.getFloat(3)));
             data.setBloodlow(rs.getInt(4));
             data.setBloodhigh(rs.getInt(5));
-
+            data.setCall(rs.getString(6));
             //添加到Data集合
             DataList.add(data);
         }

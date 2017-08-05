@@ -1,5 +1,6 @@
 package com.guet.zigbee;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,14 +12,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import Dao.DataBase;
 
-public class OneFragment extends Fragment {
+public class OneFragment extends Fragment{
 
     private static final int REFRESHINTERVAL  = 1;    //刷新时间间隔（分钟）
     @Override
@@ -59,7 +58,6 @@ public class OneFragment extends Fragment {
     }
 
     private class FetchInfoTask extends AsyncTask<Void,Void,ArrayList<Data>>{
-        private ArrayList<Data> dataList;
         @Override
         protected ArrayList<Data> doInBackground(Void... params) {
             DataBase db=new DataBase();
@@ -73,8 +71,7 @@ public class OneFragment extends Fragment {
                 TextView heartView = (TextView)getView().findViewById(R.id.heart);
                 TextView bloodView = (TextView)getView().findViewById(R.id.bloodhigh);
                 TextView bloodView1= (TextView) getView().findViewById(R.id.bloodlow);
-                // Button button= (Button) getView().findViewById(R.id.testButton);
-                Random rd = new Random();
+
                 heartView.setText(dataList.get(dataList.size()-1).getHeart());
                 bloodView.setText(String.valueOf(dataList.get(dataList.size()-1).getBloodlow()));
                 bloodView1.setText(String.valueOf(dataList.get(dataList.size()-1).getBloodhigh()));

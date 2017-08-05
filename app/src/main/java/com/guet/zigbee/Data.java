@@ -12,6 +12,7 @@ public class Data {
     private String y;
     private int bloodhigh;
     private int bloodlow;
+    private String call;
 
     public String getHeart() {
         return heart;
@@ -51,5 +52,13 @@ public class Data {
 
     public void setBloodlow(int bloodlow) {
         this.bloodlow = bloodlow;
+    }
+
+    public String getCall() {
+        return call;
+    }
+
+    public void setCall(String call) {
+        this.call = call;
     }
 }
