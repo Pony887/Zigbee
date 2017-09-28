@@ -19,7 +19,7 @@
                 android:layout_below="@id/nullText1"
                 android:id="@+id/binding"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
+                android:layout_height="55dp"
                 android:background="@drawable/binding"/>
             <TextView
                 android:id="@+id/nullText2"
@@ -32,7 +32,7 @@
                 android:id="@+id/electricity"
                 android:background="@drawable/electricity"
                 android:layout_width="wrap_content"
-                android:layout_height="70dp" />
+                android:layout_height="55dp" />
             <TextView
                 android:id="@+id/nullText3"
                 android:layout_below="@id/electricity"
@@ -44,10 +44,10 @@
                 android:id="@+id/callnum"
                 android:background="@drawable/callnum"
                 android:layout_width="wrap_content"
-                android:layout_height="70dp" />
+                android:layout_height="55dp" />
             <TextView
                 android:id="@+id/nullText4"
-                android:layout_below="@id/callNum"
+                android:layout_below="@id/callnum"
                 android:layout_width="wrap_content"
                 android:layout_height="2dp"
                 android:background="@color/white"/>
@@ -56,7 +56,7 @@
                 android:id="@+id/version"
                 android:background="@drawable/version"
                 android:layout_width="wrap_content"
-                android:layout_height="70dp" />
+                android:layout_height="55dp" />
             <TextView
                 android:id="@+id/nullText5"
                 android:layout_below="@id/version"
@@ -68,9 +68,7 @@
                 android:id="@+id/suggestion"
                 android:background="@drawable/suggestion"
                 android:layout_width="wrap_content"
-                android:layout_height="70dp" />
-
+                android:layout_height="55dp" />
         </RelativeLayout>
-
     </ScrollView>
 </FrameLayout>

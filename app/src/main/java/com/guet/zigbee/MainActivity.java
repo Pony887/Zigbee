@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -23,6 +24,10 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import android.app.Notification.Builder;
+import android.widget.Toast;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import Dao.DataBase;
 
@@ -243,17 +248,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public int getCount() {
             return fragmentList.size();
         }
-
-        //test
-        /*@Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            Fragment fragment = (Fragment) super.instantiateItem(container,position);
-            return fragment;
-        }
-        @Override
-        public int getItemPosition(Object object) {
-            return POSITION_NONE;//是返回POSITION_NONE
-        }*/
     }
-
+    // 通过onActivityResult的方法获取扫描回来的值
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
+        if(intentResult != null) {
+            if(intentResult.getContents() == null) {
+                Toast.makeText(this,"内容为空",Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this,"扫描成功",Toast.LENGTH_LONG).show();
+                // ScanResult 为 获取到的字符串
+                String ScanResult = intentResult.getContents();
+                Log.e("扫描结果",ScanResult);
+            }
+        } else {
+            super.onActivityResult(requestCode,resultCode,data);
+        }
+    }
 }
