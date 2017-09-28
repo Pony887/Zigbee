@@ -11,10 +11,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,16 +26,18 @@ import android.app.Notification.Builder;
 
 import Dao.DataBase;
 
+import static android.support.v4.view.PagerAdapter.POSITION_NONE;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private NotificationManager manager;
     private int Notification_ID;
     //辅助判断是否一键呼救
-    private boolean iscall=true;
+    private boolean iscall = true;
     //获取activity
-    private Activity activity=this;
+    private Activity activity = this;
     String[] titles = new String[]{"身体数据", "运动睡眠", "位置信息", "我"};
-    private ImageView  item_weixin, item_tongxunlu, item_faxian,item_me;
+    private ImageView item_weixin, item_tongxunlu, item_faxian, item_me;
     private Button call;
     private TextView title;
     private ViewPager vp;
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TwoFragment twoFragment;
     private ThreeFragment threeFragment;
     private FouthFragment fouthFragment;
+    private MapFragment mapFragment;
     private List<Fragment> mFragmentList = new ArrayList<Fragment>();
     private FragmentAdapter mFragmentAdapter;
 
@@ -59,15 +62,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         item_weixin.setImageResource(R.drawable.health1);
         vp.setCurrentItem(0);//初始设置ViewPager选中第一帧
         //通知栏管理器
-        manager=(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 //        定时
-        TimerTask callTimeTask=new TimerTask() {
+        TimerTask callTimeTask = new TimerTask() {
             @Override
             public void run() {
-                DataBase db=new DataBase();
-                ArrayList<Data> dataList=db.TheSqlConnection();
-                if (dataList.get(dataList.size()-1).getCall().equals("call")&&iscall)
-                {
+                DataBase db = new DataBase();
+                ArrayList<Data> dataList = db.TheSqlConnection();
+                if (!dataList.isEmpty() && dataList.get(dataList.size() - 1).getCall().equals("call") && iscall) {
 //                    VibratorUtil.Vibrate(activity,1000);
                     showNotification();
                     try {
@@ -75,15 +77,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    iscall=false;
-                }else if(dataList.get(dataList.size()-1).getCall().equals("nocall"))
-                {
-                    iscall=true;
+                    iscall = false;
+                } else if (!dataList.isEmpty() && dataList.get(dataList.size() - 1).getCall().equals("nocall")) {
+                    iscall = true;
                 }
             }
         };
         Timer infoTimer = new Timer();
-        infoTimer.schedule(callTimeTask,0,6000);
+        infoTimer.schedule(callTimeTask, 0, 6000);
 
         //ViewPager的监听事件
         vp.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -114,21 +115,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void showNotification() {
         // TODO Auto-generated method stub
-        Notification.Builder builder=new Builder(this);
+        Notification.Builder builder = new Builder(this);
         builder.setSmallIcon(R.drawable.icon);//设置图标
         builder.setTicker("一键呼救");//手机状态栏的提示
         builder.setContentTitle("一键呼救");//设置标题
         builder.setContentText("有老人一键呼救,点击查看");//设置通知内容
         builder.setWhen(System.currentTimeMillis());//设置通知时间
-        Intent intent=new Intent(this,MainActivity.class);
-        PendingIntent pendingIntent=PendingIntent.getActivity(this, 0, intent, 0);
+        Intent intent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
         builder.setContentIntent(pendingIntent);//点击后的意图
         builder.setDefaults(Notification.DEFAULT_LIGHTS);//设置指示灯
         builder.setDefaults(Notification.DEFAULT_SOUND);//设置提示声音
         builder.setDefaults(Notification.DEFAULT_VIBRATE);//设置震动
-        Notification notification=builder.build();//4.1以上，以下要用getNotification()
+        Notification notification = builder.build();//4.1以上，以下要用getNotification()
         manager.notify(Notification_ID, notification);
     }
+
     /**
      * 初始化布局View
      */
@@ -138,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         item_tongxunlu = (ImageView) findViewById(R.id.item_tongxunlu);
         item_faxian = (ImageView) findViewById(R.id.item_faxian);
         item_me = (ImageView) findViewById(R.id.item_me);
-        call= (Button) findViewById(R.id.call);
+        call = (Button) findViewById(R.id.call);
 
         item_weixin.setOnClickListener(this);
         item_tongxunlu.setOnClickListener(this);
@@ -151,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         twoFragment = new TwoFragment();
         threeFragment = new ThreeFragment();
         fouthFragment = new FouthFragment();
+        mapFragment = new MapFragment();
         //给FragmentList添加数据
         mFragmentList.add(oneFragment);
         mFragmentList.add(twoFragment);
@@ -174,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 vp.setCurrentItem(3, true);
                 break;
             case R.id.call:
-                Intent intent = new Intent(Intent.ACTION_DIAL,Uri.parse("tel:" + "15207732195"));
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "15207732195"));
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 break;
@@ -208,6 +211,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    public void changeThird(int m) {
+        if (m == 0) {
+            mFragmentList.remove(3);
+            mFragmentList.add(3, threeFragment);
+        }
+        if (m == 1) {
+            mFragmentList.remove(3);
+            mFragmentList.add(3, mapFragment);
+            mFragmentAdapter.notifyDataSetChanged();
+        }
+
+    }
+
 
     public class FragmentAdapter extends FragmentPagerAdapter {
 
@@ -227,5 +243,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public int getCount() {
             return fragmentList.size();
         }
+
+        //test
+        /*@Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            Fragment fragment = (Fragment) super.instantiateItem(container,position);
+            return fragment;
+        }
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;//是返回POSITION_NONE
+        }*/
     }
+
 }

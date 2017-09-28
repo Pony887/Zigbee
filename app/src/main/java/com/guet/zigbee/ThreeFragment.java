@@ -1,145 +1,75 @@
 package com.guet.zigbee;
 
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
-import com.amap.api.maps.AMap;
-import com.amap.api.maps.LocationSource;
-import com.amap.api.maps.MapView;
-import com.amap.api.maps.model.MyLocationStyle;
+import android.widget.Button;
 
-public class ThreeFragment extends Fragment implements CompoundButton.OnCheckedChangeListener, LocationSource, AMapLocationListener {
-    private MapView mapView;
-    private AMap aMap;
-    private MyLocationStyle myLocationStyle;
-    private OnLocationChangedListener mListener;
-    private AMapLocationClient locationClient;
-    private AMapLocationClientOption clientOption;
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link ThreeFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class ThreeFragment extends Fragment {
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
 
 
     public ThreeFragment() {
-
+        // Required empty public constructor
     }
 
-    public static ThreeFragment newInstance() {
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment ThreeFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static ThreeFragment newInstance(String param1, String param2) {
         ThreeFragment fragment = new ThreeFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_three, container, false);
-        initview(savedInstanceState, view);
-        return view;
-    }
+        // Inflate the layout for this fragment
+        View v = inflater.inflate(R.layout.fragment_three, container, false);
 
-    private void initview(Bundle savedInstanceState, View view) {
-        mapView = (MapView) view.findViewById(R.id.map);
-        mapView.onCreate(savedInstanceState);
-        if (aMap == null) {
-            aMap = mapView.getMap();
-        }
-        myLocationStyle = new MyLocationStyle();//初始化定位蓝点样式类
-        aMap.setMyLocationStyle(myLocationStyle);
-        aMap.getUiSettings().setMyLocationButtonEnabled(true);
-        aMap.setLocationSource(this);
-        aMap.setMyLocationEnabled(true);
-    }
-
-    /**
-     * 激活定位
-     */
-    @Override
-    public void activate(OnLocationChangedListener listener) {
-        mListener = listener;
-        if (locationClient == null) {
-            locationClient = new AMapLocationClient(getActivity());
-            clientOption = new AMapLocationClientOption();
-            locationClient.setLocationListener(this);
-            clientOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);//高精度定位
-            clientOption.setOnceLocationLatest(true);//设置单次精确定位
-            locationClient.setLocationOption(clientOption);
-            locationClient.startLocation();
-        }
-    }
-
-    /**
-     * 停止定位
-     */
-    @Override
-    public void deactivate() {
-        mListener = null;
-        if (locationClient != null) {
-            locationClient.stopLocation();
-            locationClient.onDestroy();
-        }
-        locationClient = null;
-    }
-
-    @Override
-    public void onLocationChanged(AMapLocation aMapLocation) {
-        if (mListener != null && aMapLocation != null) {
-            if (aMapLocation != null
-                    && aMapLocation.getErrorCode() == 0) {
-                mListener.onLocationChanged(aMapLocation);// 显示系统小蓝点
-            } else {
-                String errText = "定位失败," + aMapLocation.getErrorCode() + ": " + aMapLocation.getErrorInfo();
-                Log.e("AmapErr", errText);
+        Button test = (Button)v.findViewById(R.id.button_test);
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(),MapActivity.class);
+                startActivity(i);
             }
-        }
-    }
-
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (isChecked) {
-            aMap.setMapType(AMap.MAP_TYPE_SATELLITE);
-        } else {
-            aMap.setMapType(AMap.MAP_TYPE_NORMAL);
-        }
-    }
-
-    /**
-     * 必须重写以下方法
-     */
-    @Override
-    public void onResume() {
-        super.onResume();
-        mapView.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mapView.onPause();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        mapView.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mapView.onDestroy();
-        if (locationClient != null) {
-            locationClient.onDestroy();
-        }
+        });
+        return v;
     }
 }
-

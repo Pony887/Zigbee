@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Zigbee</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_map">MapActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="shop_URL">http://101.132.108.219/www/index.php/product/c0.mhtml</string>
 </resources>

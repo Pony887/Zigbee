@@ -15,6 +15,6 @@ public class Threecolor extends  BaseColorActivity {
     }
     @Override
     protected int getLayoutResId() {
-        return R.layout.fragment_three;
+        return R.layout.fragment_map;
     }
 }

@@ -7,9 +7,11 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
     <style name="TranslucentTheme" parent="AppTheme">
         <!--在Android 4.4之前的版本上运行，直接跟随系统主题-->
     </style>
+
     <style name="AlertDialog" parent="@android:style/Theme.Dialog">
         <!-- 这里设置背景为透明，为了隐藏边框 -->
         <item name="android:windowBackground">@drawable/dialog</item>
@@ -21,6 +23,7 @@
         <item name="android:windowIsTranslucent">true</item>
         <!--item name="android:windowAnimationStyle">@+android:style/Animation.Translucent</item-->
     </style>
+
     <style name="AlertDialog1" parent="@android:style/Theme.Dialog">
         <!-- 这里设置背景为透明，为了隐藏边框 -->
         <item name="android:windowBackground">@drawable/dialog1</item>
@@ -32,4 +35,13 @@
         <item name="android:windowIsTranslucent">true</item>
         <!--item name="android:windowAnimationStyle">@+android:style/Animation.Translucent</item-->
     </style>
+
+    <style name="TranslucentTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="TranslucentTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="TranslucentTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
